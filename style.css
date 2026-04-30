@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+.container {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+h1, h2 {
+    margin-top: 0;
+}
+
+form, label, textarea, select, input, button, pre {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+label, button, .message {
+    display: block;
+    margin-top: 16px;
+}
+
+textarea, select, input, button, pre {
+    padding: 10px;
+    font: inherit;
+}
+
+.intro {
+    line-height: 1.5;
+}
+
+button {
+    cursor: pointer;
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+}
+
+.panel {
+    margin-top: 24px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.results {
+    margin: 0;
+}
+
+.results dt {
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+.results dd {
+    margin: 8px 0 0;
+}
+
+#copy-button {
+    margin-top: 10px;
+}
+
+.error {
+    color: #b00020;
+}

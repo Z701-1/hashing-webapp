@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SHA-256 Hashing and Salting Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>SHA-256 Hashing and Salting Demo</h1>
+        <p class="intro">
+            This simple Flask app demonstrates plaintext handling, SHA-256 hashing, and SHA-256 hashing with a salt.
+            It is designed to show how hashing works and why adding a salt matters in cryptography.
+        </p>
+
+        <form method="post">
+            <label for="text">Input</label>
+            <textarea id="text" name="text" rows="6" required>{{ text }}</textarea>
+
+            <label for="algorithm">Algorithm</label>
+            <select id="algorithm" name="algorithm">
+                {% for item in algorithm_options %}
+                    <option value="{{ item }}" {% if algorithm == item %}selected{% endif %}>{{ item }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="mode">Mode</label>
+            <select id="mode" name="mode">
+                {% for value, label in mode_options.items() %}
+                    <option value="{{ value }}" {% if mode == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+
+            <div id="salt-group">
+                <label for="salt">Salt</label>
+                <input id="salt" name="salt" type="text" value="{{ salt }}">
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if error %}
+            <p class="message error">{{ error }}</p>
+        {% endif %}
+
+        {% if details %}
+            <section class="panel">
+                <h2>Result</h2>
+
+                <dl class="results">
+                    <dt>Algorithm</dt>
+                    <dd>{{ details.algorithm }}</dd>
+
+                    <dt>Selected mode</dt>
+                    <dd>{{ details.mode }}</dd>
+
+                    <dt>Plaintext input</dt>
+                    <dd><pre>{{ details.plaintext }}</pre></dd>
+
+                    {% if details.salt %}
+                        <dt>Salt input</dt>
+                        <dd><pre>{{ details.salt }}</pre></dd>
+                    {% endif %}
+
+                    {% if details.combined_input %}
+                        <dt>Combined input before hashing</dt>
+                        <dd><pre>{{ details.combined_input }}</pre></dd>
+                    {% endif %}
+
+                    <dt>Final hash output</dt>
+                    <dd>
+                        <pre id="result-output">{{ details.final_output }}</pre>
+                        <button id="copy-button" type="button">Copy Result</button>
+                    </dd>
+                </dl>
+            </section>
+
+            {% if comparison %}
+                <section class="panel">
+                    <h2>Comparison</h2>
+                    <dl class="results">
+                        <dt>SHA-256(plaintext)</dt>
+                        <dd><pre>{{ comparison.plain_hash }}</pre></dd>
+
+                        <dt>SHA-256(plaintext + salt)</dt>
+                        <dd><pre>{{ comparison.salted_hash }}</pre></dd>
+                    </dl>
+                </section>
+            {% endif %}
+
+        {% endif %}
+    </main>
+
+    <script>
+        const mode = document.getElementById("mode");
+        const saltGroup = document.getElementById("salt-group");
+        const saltInput = document.getElementById("salt");
+        const copyButton = document.getElementById("copy-button");
+        const resultOutput = document.getElementById("result-output");
+
+        function toggleSalt() {
+            const needsSalt = mode.value === "Hash and Salt";
+            saltGroup.style.display = needsSalt ? "block" : "none";
+            saltInput.required = needsSalt;
+        }
+
+        mode.addEventListener("change", toggleSalt);
+        toggleSalt();
+
+        if (copyButton && resultOutput) {
+            copyButton.addEventListener("click", async function () {
+                await navigator.clipboard.writeText(resultOutput.textContent);
+            });
+        }
+    </script>
+</body>
+</html>
